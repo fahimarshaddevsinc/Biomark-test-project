@@ -9,9 +9,7 @@ describe("Login Specs", () => {
   beforeEach(() => {
     cy.visit("/")
 
-    it('Validate that the Login page is loaded properly', () => {
-      onLoginPage.verify_field_visiblity()
-    })
+    onLoginPage.verify_field_visiblity()
   })
 
   it("Validate successful login", () => {
@@ -43,34 +41,35 @@ describe("Login Specs", () => {
 
     onLoginPage.verify_error_message()
   })
+})
 
-  it("Validate that the Dashboard page has been properly loaded", () => {
+describe.only("Post Login Specs", () => {
 
+  before(() => {
+    cy.visit("/")
+
+    onLoginPage.verify_field_visiblity()
     onLoginPage.enter_credentials(Cypress.env('username'), Cypress.env('password'))
     onLoginPage.verify_password_field_is_masked()
     onLoginPage.click_on_login_button()
+})
+
+  it("Validate that the Dashboard page has been properly loaded", () => {
+
     onSidebar.validate_sidebar_is_visible()
     onSidebar.validate_dashboard_header()
   })
 
   it("Verify that the labs list is opened when redirected to the Labs page from Accounts", () => {
 
-    onLoginPage.enter_credentials(Cypress.env('username'), Cypress.env('password'))
-    onLoginPage.verify_password_field_is_masked()
-    onLoginPage.click_on_login_button()
     onSidebar.validate_sidebar_is_visible()
     onSidebar.validate_dashboard_header()
     onSidebar.navigate_to_account_page()
     onLabListPage.verify_lab_list_page_is_loaded()
   })
 
-  it.only("Verify that the branch filter is working on lab list page", () => {
-    onLoginPage.enter_credentials(Cypress.env('username'), Cypress.env('password'))
-    onLoginPage.verify_password_field_is_masked()
-    onLoginPage.click_on_login_button()
-    onSidebar.validate_sidebar_is_visible()
-    onSidebar.validate_dashboard_header()
-    onSidebar.navigate_to_account_page()
+  it("Verify that the branch filter is working on lab list page", () => {
+
     onLabListPage.verify_lab_list_page_is_loaded()
     onLabListPage.verify_branch_filter_dropdown()
   })
